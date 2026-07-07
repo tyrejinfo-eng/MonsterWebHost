@@ -1,0 +1,164 @@
+<Window x:Class="MonsterWebHost.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="clr-namespace:MonsterWebHost.Models"
+        Title="MonsterWebHost"
+        Width="1480"
+        Height="920"
+        WindowStartupLocation="CenterScreen"
+        Background="#FF111111"
+        Foreground="White">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Padding" Value="12,8" />
+            <Setter Property="MinHeight" Value="34" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="4" />
+            <Setter Property="Padding" Value="8,6" />
+            <Setter Property="Background" Value="#FF1C1C1C" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#FF333333" />
+        </Style>
+        <HierarchicalDataTemplate DataType="{x:Type models:FolderNode}" ItemsSource="{Binding Children}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding DisplayName}" />
+            </StackPanel>
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Background="#FF1A1A1A" CornerRadius="18" Padding="16" Margin="0,0,0,12">
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Top">
+                    <TextBlock Text="MonsterWebHost" FontSize="28" FontWeight="Bold" />
+                    <TextBlock Text="Select a website folder, host it locally, and push it through Cloudflared." Opacity="0.8" Margin="0,4,0,0" />
+                </StackPanel>
+
+                <Grid Margin="0,16,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.2*" />
+                        <ColumnDefinition Width="1.1*" />
+                        <ColumnDefinition Width="1.2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Website folder" FontWeight="SemiBold" Margin="4,0,0,2" />
+                        <DockPanel>
+                            <TextBox Text="{Binding SelectedFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="480" />
+                            <Button Content="Browse" Click="BrowseFolder_Click" />
+                        </DockPanel>
+
+                        <TextBlock Text="Cloudflared executable" FontWeight="SemiBold" Margin="4,10,0,2" />
+                        <TextBox Text="{Binding CloudflaredExecutable, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Text="Cloudflared arguments" FontWeight="SemiBold" Margin="4,10,0,2" />
+                        <TextBox Text="{Binding CloudflaredArguments, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <WrapPanel Margin="0,10,0,0">
+                            <Button Content="Start Website Host" Command="{Binding StartHostCommand}" />
+                            <Button Content="Stop Website Host" Command="{Binding StopHostCommand}" />
+                            <Button Content="Refresh Folder Tree" Command="{Binding RefreshFolderCommand}" />
+                            <Button Content="Open Website" Command="{Binding OpenWebsiteCommand}" />
+                        </WrapPanel>
+
+                        <WrapPanel Margin="0,6,0,0">
+                            <Button Content="Start Cloudflared" Command="{Binding StartCloudflaredCommand}" />
+                            <Button Content="Stop Cloudflared" Command="{Binding StopCloudflaredCommand}" />
+                        </WrapPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="16,0,16,0">
+                        <TextBlock Text="Port" FontWeight="SemiBold" Margin="4,0,0,2" />
+                        <TextBox Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <TextBlock Text="Local URL" FontWeight="SemiBold" Margin="4,10,0,2" />
+                        <TextBox Text="{Binding WebsiteUrl}" IsReadOnly="True" />
+
+                        <TextBlock Text="Status" FontWeight="SemiBold" Margin="4,10,0,2" />
+                        <Border Background="#FF222222" CornerRadius="10" Padding="10">
+                            <StackPanel>
+                                <TextBlock Text="{Binding StatusMessage}" FontWeight="Bold" />
+                                <TextBlock Text="{Binding OnlineStatusText}" Opacity="0.85" />
+                                <TextBlock Text="{Binding CloudflaredStatusText}" Opacity="0.85" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Metrics" FontWeight="SemiBold" Margin="4,0,0,2" />
+                        <UniformGrid Columns="2" Rows="2" Margin="0,0,0,6">
+                            <Border Background="#FF232323" CornerRadius="12" Padding="12" Margin="4">
+                                <StackPanel>
+                                    <TextBlock Text="Requests" Opacity="0.75" />
+                                    <TextBlock Text="{Binding RequestCount}" FontSize="22" FontWeight="Bold" />
+                                </StackPanel>
+                            </Border>
+                            <Border Background="#FF232323" CornerRadius="12" Padding="12" Margin="4">
+                                <StackPanel>
+                                    <TextBlock Text="Downloads" Opacity="0.75" />
+                                    <TextBlock Text="{Binding DownloadCount}" FontSize="22" FontWeight="Bold" />
+                                </StackPanel>
+                            </Border>
+                            <Border Background="#FF232323" CornerRadius="12" Padding="12" Margin="4">
+                                <StackPanel>
+                                    <TextBlock Text="Bytes Served" Opacity="0.75" />
+                                    <TextBlock Text="{Binding BytesServedHuman}" FontSize="22" FontWeight="Bold" />
+                                </StackPanel>
+                            </Border>
+                            <Border Background="#FF232323" CornerRadius="12" Padding="12" Margin="4">
+                                <StackPanel>
+                                    <TextBlock Text="Last Request" Opacity="0.75" />
+                                    <TextBlock Text="{Binding LastRequestAtText}" FontSize="22" FontWeight="Bold" />
+                                </StackPanel>
+                            </Border>
+                        </UniformGrid>
+                    </StackPanel>
+                </Grid>
+            </DockPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.1*" />
+                <ColumnDefinition Width="1.6*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="#FF1A1A1A" CornerRadius="18" Padding="16" Margin="0,0,12,0">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="Folder structure" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" />
+                    <TreeView ItemsSource="{Binding FolderRoots}" Background="Transparent" BorderThickness="0" Foreground="White" />
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="1" Background="#FF1A1A1A" CornerRadius="18" Padding="16">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="Recent requests and downloads" FontSize="18" FontWeight="Bold" Margin="0,0,0,10" />
+                    <ListView ItemsSource="{Binding RecentEvents}" Background="Transparent" BorderThickness="0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Time" DisplayMemberBinding="{Binding TimestampLocalText}" Width="130" />
+                                <GridViewColumn Header="Path" DisplayMemberBinding="{Binding RequestPath}" Width="250" />
+                                <GridViewColumn Header="Status" DisplayMemberBinding="{Binding StatusCode}" Width="70" />
+                                <GridViewColumn Header="IP" DisplayMemberBinding="{Binding ClientIp}" Width="130" />
+                                <GridViewColumn Header="Geo" DisplayMemberBinding="{Binding GeoSummary}" Width="220" />
+                                <GridViewColumn Header="Download" DisplayMemberBinding="{Binding IsDownload}" Width="70" />
+                                <GridViewColumn Header="Bytes" DisplayMemberBinding="{Binding ResponseBytesHuman}" Width="90" />
+                                <GridViewColumn Header="Latency" DisplayMemberBinding="{Binding DurationText}" Width="90" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
