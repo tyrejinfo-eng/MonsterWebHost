@@ -1,0 +1,19 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Users\Ty\Documents\GitHub\MonsterWebHost\MonsterWebHost_ui_fixed_buildfix\MonsterWebHost> dotnet clean
+
+Build succeeded in 0,3s
+PS C:\Users\Ty\Documents\GitHub\MonsterWebHost\MonsterWebHost_ui_fixed_buildfix\MonsterWebHost> dotnet restore
+Restore complete (0,4s)
+
+Build succeeded in 0,6s
+PS C:\Users\Ty\Documents\GitHub\MonsterWebHost\MonsterWebHost_ui_fixed_buildfix\MonsterWebHost> dotnet build
+Restore complete (0,2s)
+  MonsterWebHost net8.0-windows10.0.19041.0 succeeded (4,0s) → bin\Debug\net8.0-windows10.0.19041.0\MonsterWebHost.dll
+
+Build succeeded in 4,5s
+PS C:\Users\Ty\Documents\GitHub\MonsterWebHost\MonsterWebHost_ui_fixed_buildfix\MonsterWebHost> dotnet run
+PS C:\Users\Ty\Documents\GitHub\MonsterWebHost\MonsterWebHost_ui_fixed_buildfix\MonsterWebHost>
